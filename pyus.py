@@ -91,11 +91,10 @@ class AbstractTracker(object):
         self.post_queue = queue.Queue()
         # spawn a new thread for HTTP requests
         thread = threading.Thread(target=self._http_post_worker)
-        # the entire Python program exits when only daemon threads are left. 
+        # the entire Python program exits when only daemon threads are left.
         # Daemon threads are abruptly stopped at shutdown, but I don't care for tracking.
-        thread.daemon=True
+        thread.daemon = True
         thread.start()
-
 
     def _track(self, hit_type, params=None):
         """
@@ -115,18 +114,17 @@ class AbstractTracker(object):
     def _http_post_worker(self):
         while True:
             params = self.post_queue.get(block=True)
-            print("Params:",params)
+            print("Params:", params)
             data = urlencode(params)
-            print("data:",data)
+            print("data:", data)
             request_url = AbstractTracker.GA_URL + '?' + data
-            print("Request1:",request_url)
+            print("Request1:", request_url)
             # adding charset parameter to the Content-Type header.
             response = urlbib.urlopen(request_url)
             print(response.read())
-            print("Response:",response)
+            print("Response:", response)
             print("done")
             # TODO handle response?
-            
 
 
 class AppTracker(AbstractTracker):
